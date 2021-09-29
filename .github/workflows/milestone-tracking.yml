@@ -1,6 +1,6 @@
 name: Milestone tracking
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
 permissions:
   issues: write
