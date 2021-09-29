@@ -42,6 +42,11 @@ jobs:
               pullRequest {
                 id
                 number
+                milestone {
+                  id
+                  number
+                  title
+                }
               }
             }
           }' -f pull=$PULL_REQUEST_ID -f milestone=$MILESTONE_ID
