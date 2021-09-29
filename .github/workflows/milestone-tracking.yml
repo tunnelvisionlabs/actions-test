@@ -39,6 +39,9 @@ jobs:
         gh api graphql -f query='
           mutation($pull: ID!, $milestone: ID!) {
             updatePullRequest(input: {pullRequestId: $pull, milestoneId: $milestone}) {
-              clientMutationId
+              pullRequest {
+                id
+                number
+              }
             }
           }' -f pull=$PULL_REQUEST_ID -f milestone=$MILESTONE_ID
