@@ -37,7 +37,7 @@ jobs:
       if: ${{ env.MILESTONE_ID != '' }}
       run: |
         gh api graphql -f query='
-          mutation($pull: ID!, $milestone: ID!) {
+          mutation($pull: ID!, $milestone: ID) {
             updatePullRequest(input: {pullRequestId: $pull, milestoneId: $milestone}) {
               pullRequest {
                 id
