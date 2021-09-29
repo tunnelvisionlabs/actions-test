@@ -2,8 +2,8 @@ name: Milestone tracking
 on:
   pull_request:
     types: [closed]
-permissions:
-  pull-requests: write
+#permissions:
+#  pull-requests: write
 jobs:
   add_milestone:
     runs-on: ubuntu-latest
