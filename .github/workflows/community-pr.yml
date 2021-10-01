@@ -28,7 +28,7 @@ jobs:
                 authorAssociation
               }
             }
-          }' -f org=$ORGANIZATION -f repo=$REPOSITORY -f pull="$PULL_REQUEST_NUMBER" -f label="$LABEL_NAME" > data.json
+          }' -f org=$ORGANIZATION -f repo=$REPOSITORY -f pull=$PULL_REQUEST_NUMBER -f label="$LABEL_NAME" > data.json
 
         echo 'LABEL_ID='$(jq -r '.data.repository.label.id' data.json) >> $GITHUB_ENV
         echo 'AUTHOR_ASSOCIATION='$(jq -r '.data.repository.pullRequest.authorAssociation' data.json) >> $GITHUB_ENV
