@@ -2,6 +2,7 @@ name: Enable auto merge
 on:
   pull_request_target:
     types: [opened, ready_for_review]
+
 permissions:
   contents: write
 jobs:
