@@ -13,8 +13,8 @@ jobs:
     - name: Get data
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ORGANIZATION: dotnet
-        REPOSITORY: roslyn-analyzers
+        ORGANIZATION: tunnelvisionlabs
+        REPOSITORY: actions-test
         LABEL_NAME: Community
         PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
       run: |
