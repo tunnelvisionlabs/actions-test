@@ -1,0 +1,41 @@
+name: Require approval before merging SDK change
+on:
+  pull_request_target:
+    types: [opened, ready_for_review]
+
+permissions:
+  contents: write
+jobs:
+  request_changes:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'tunnelvisionlabs/actions-test' && github.event.pull_request.user.login == 'sharwell' && contains(github.event.pull_request.body, 'Updates sdk.version') }}
+    steps:
+    - name: Create review
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PULL_REQUEST_ID: ${{ github.event.pull_request.node_id }}
+      run: |
+        gh api graphql -f query='
+          mutation($pull: ID!) {
+            addPullRequestReview(input: {pullRequestId: $pull}) {
+              pullRequestReview {
+                id
+              }
+            }
+          }' -f pull=$PULL_REQUEST_ID > data.json
+
+        cat data.json
+        echo 'REVIEW_ID='$(jq -r '.data.addPullRequestReview.pullRequestReview.id' data.json) >> $GITHUB_ENV
+
+    - name: Submit change request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PULL_REQUEST_ID: ${{ github.event.pull_request.node_id }}
+      if: ${{ env.REVIEW_ID != '' && env.REVIEW_ID != 'null' }}
+      run: |
+        gh api graphql -f query='
+          mutation($review: ID!) {
+            submitPullRequestReview(input: {pullRequestReviewId: $review, event: "REQUEST_CHANGES", body: "This PR changes the .NET SDK version. Review required from @dotnet/roslyn-infrastructure before merging."}) {
+              clientMutationId
+            }
+          }' -f review=$REVIEW_ID
