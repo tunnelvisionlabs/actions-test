@@ -2,9 +2,7 @@ name: Require approval before merging SDK change
 on:
   pull_request_target:
     types: [opened, ready_for_review]
-
 permissions:
-  contents: write
   issues: write
   pull-requests: write
 jobs:
@@ -37,7 +35,7 @@ jobs:
       run: |
         gh api graphql -f query='
           mutation($review: ID!) {
-            submitPullRequestReview(input: {pullRequestReviewId: $review, event: "REQUEST_CHANGES", body: "This PR changes the .NET SDK version. Review required from @dotnet/roslyn-infrastructure before merging."}) {
+            submitPullRequestReview(input: {pullRequestReviewId: $review, event: REQUEST_CHANGES, body: "This PR changes the .NET SDK version. Review required from @dotnet/roslyn-infrastructure before merging."}) {
               clientMutationId
             }
           }' -f review=$REVIEW_ID
